@@ -250,7 +250,7 @@ public class MybatisPlusCodeGenerator {
     public static void main(String[] args) {
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
-        // 全局配置
+        // 全局配置  user.dir 项目根路径
         String projectPath = System.getProperty("user.dir")+"/parent/mybatis_plus_test";
         GlobalConfig gc = getGlobalConfig(projectPath);
         mpg.setGlobalConfig(gc);
