@@ -25,7 +25,7 @@ public interface TestMapper extends BaseMapper<TestInfo> {
      * </p>
      *
      * @param page 分页对象,xml中可以从里面进行取值,传递参数 Page 即自动分页,必须放在第一位(你可以继承Page实现自己的分页对象)
-     * @param state 状态
+     * @param testInfo 查询条件
      * @return 分页对象
      */
     IPage<TestInfo> selectPageVo(Page<?> page, TestInfo testInfo);
