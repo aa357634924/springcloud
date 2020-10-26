@@ -1,5 +1,6 @@
 package com.rj.springcloud;
 
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
@@ -11,6 +12,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * @date 2020-10-26 11:22
  */
 @SpringBootApplication
+//@MapperScan("com.rj.springcloud.dao")
 public class MybatisPlusMain8080 {
     public static void main(String[] args) {
         SpringApplication.run(MybatisPlusMain8080.class,args);

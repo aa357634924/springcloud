@@ -13,4 +13,7 @@ spring:
     username: root
     password: root
 
+#引入log4j2日志配置文件
+logging:
+  config: classpath:log4j2.xml
 

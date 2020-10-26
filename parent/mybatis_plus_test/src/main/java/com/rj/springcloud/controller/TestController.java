@@ -1,7 +1,15 @@
 package com.rj.springcloud.controller;
 
+import com.rj.springcloud.bean.TestInfo;
+import com.rj.springcloud.service.TestService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * TODO
@@ -13,9 +21,31 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/test")
 public class TestController {
+    private Logger logger = LoggerFactory.getLogger(TestController.class);
+
+    @Autowired
+    private TestService testService;
 
     @RequestMapping("/index")
     public String test(){
         return "test success...";
+    }
+
+    @RequestMapping("/insert")
+    public String insert(TestInfo testInfo){
+        testInfo = new TestInfo();
+        testInfo.setUsername("张三");
+        testInfo.setOperTime(new Date());
+        testService.insert(testInfo);
+        return "insert success...";
+    }
+
+    @RequestMapping("/findByCondition")
+    public List<TestInfo> findByCondition(TestInfo testInfo){
+        testInfo = new TestInfo();
+        testInfo.setId(1);
+        List<TestInfo> list = testService.findByCondition(testInfo);
+        logger.info("查询成功。。。");
+        return list;
     }
 }
