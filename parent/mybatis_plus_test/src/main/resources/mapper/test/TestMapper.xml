@@ -43,5 +43,10 @@
         </where>
         order by oper_time desc
     </select>
+    <select id="selectPageVo" resultMap="baseResultMap">
+        select
+        <include refid="columns"></include>
+        from t_test
+    </select>
 
 </mapper>

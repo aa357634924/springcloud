@@ -1,5 +1,7 @@
 package com.rj.springcloud.service;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rj.springcloud.bean.TestInfo;
 
 import java.util.List;
@@ -15,4 +17,6 @@ public interface TestService {
     public int insert(TestInfo testInfo);
 
     public List<TestInfo> findByCondition(TestInfo testInfo);
+
+    public IPage<TestInfo> selectUserPage(Page<TestInfo> page, TestInfo testInfo);
 }

@@ -1,5 +1,7 @@
 package com.rj.springcloud.controller;
 
+import com.baomidou.mybatisplus.core.metadata.IPage;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rj.springcloud.bean.TestInfo;
 import com.rj.springcloud.service.TestService;
 import org.slf4j.Logger;
@@ -45,6 +47,17 @@ public class TestController {
         testInfo = new TestInfo();
         testInfo.setId(1);
         List<TestInfo> list = testService.findByCondition(testInfo);
+        logger.info("查询成功。。。");
+        return list;
+    }
+
+    @RequestMapping("/findPage")
+    public List<TestInfo> findPage(TestInfo testInfo){
+        testInfo = new TestInfo();
+        testInfo.setId(1);
+        Page<TestInfo> page = new Page<TestInfo>(1,10);
+        IPage<TestInfo> testInfoIPage = testService.selectUserPage(page, testInfo);
+        List<TestInfo> list = testInfoIPage.getRecords();
         logger.info("查询成功。。。");
         return list;
     }
