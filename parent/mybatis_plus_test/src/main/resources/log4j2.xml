@@ -65,8 +65,9 @@
         <logger name="org.eclipse.jetty" level="INFO"/>
         <logger name="org.mybatis" level="INFO"/>
 
-        <logger name="com.rj.springcloud.controller" level="debug"/>
-        <logger name="com.rj.springcloud.service" level="debug"/>
+<!--        <logger name="com.rj.springcloud.controller" level="debug"/>-->
+<!--        <logger name="com.rj.springcloud.service" level="debug"/>-->
+        <logger name="com.rj.springcloud" level="debug"/>
 
         <root level="all">
             <appender-ref ref="Console"/>

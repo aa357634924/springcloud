@@ -19,4 +19,4 @@ logging:
 
 mybatis-plus:
   mapper-locations: classpath*:/mapper/**/*.xml
-  type-aliases-package: com.rj.springcloud.bean
+#  type-aliases-package: com.rj.springcloud.bean
