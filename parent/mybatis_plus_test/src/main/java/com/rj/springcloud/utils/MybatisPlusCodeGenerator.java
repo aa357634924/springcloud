@@ -27,9 +27,7 @@ import java.util.*;
  */
 public class MybatisPlusCodeGenerator {
     /**
-     * <p>
      * 读取控制台内容
-     * </p>
      */
     public static String scanner(String tip) {
         Scanner scanner = new Scanner(System.in);
@@ -239,6 +237,16 @@ public class MybatisPlusCodeGenerator {
         return cfg;
     }
 
+    /**
+     * 使用方法：输入模块名称和数据库中的表名即可自动创建代码
+     * 修改的地方：
+     *  1.全局配置修改存放路径
+     *  2.数据源配置修改数据库连接配置
+     *  3.包配置修改生成的package路径
+     *  4.策略配置修改生成文件的各种属性名称及属性配置
+     *  5.模板配置修改自动创建文件使用的模板信息
+     *  6.自定义配置单独修改mapper.xml文件的存放路径
+     * */
     public static void main(String[] args) {
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
