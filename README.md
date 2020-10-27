@@ -32,9 +32,24 @@
     * 2）搭载swagger2，自动生成接口文档，访问路径为: 访问swagger路径：http://localhost:8080/mybatis/swagger-ui.html
 
     * 3）使用@SpringBootTest编写测试类时，测试类的包路径要和SpringApplication扫描的包路径一致才可以
-
+    
     * 4） mybatis-plus-generator使用方法：
          * 1.将mybatis-plus的模板文件复制到resources目录下
          * 2.在resources跟目录下创建mybatisPlusGenerator.yml
          * 3.在mybatisPlusGenerator.yml中填写属性配置
          * 4.执行main方法，输入模块名称、表头格式、表名即可自动创建代码（多个表名之间用英文逗号分隔）
+    
+    * 5）乐观锁配置：
+        * 1.数据库表中增加一个int型的 version 字段
+        * 2.实体类中version字段增加 @Version 和 @TableField(value = "version", fill = FieldFill.INSERT)
+        * 3.在任意一个@Configuration配置类中引入乐观锁插件（此系统所有关于mybatis的配置统一在MybatisPlusConfig.java中进行设置）
+            @Bean
+            public OptimisticLockerInterceptor optimisticLockerInterceptor() {
+                return new OptimisticLockerInterceptor();
+            }
+        * 4.MetaObjectHandler.insertFill中对version设置一个初始值
+            //乐观锁版本号  新增的时候需要设置一个默认值，修改的时候mybatis-plus会自动添加
+            setFieldValByName("version", 1, metaObject);
+            
+        
+    
