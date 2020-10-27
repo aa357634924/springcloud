@@ -26,7 +26,7 @@ import java.util.Scanner;
 
 /**
  * TODO
- *
+ *  自动生成代码，先输入模块名，再输入模块下对应的数据库表名即可（数据库表名用英文逗号分隔）
  * @author rj
  * @version 1.0
  * @date 2020-10-26 19:50
