@@ -23,9 +23,13 @@
         <log4j.version>1.2.17</log4j.version>
         <lombok.version>1.16.18</lombok.version>
         <mysql.version>8.0.13</mysql.version>
-        <druid.version>1.1.20</druid.version>
-        <mybatis.spring.boot.version>2.1.3</mybatis.spring.boot.version>
-        <springfox.swagger2.version>2.9.2</springfox.swagger2.version>
+        <druid.verison>1.1.20</druid.verison>
+        <swagger2.verison>2.9.2</swagger2.verison>
+        <velocity.verison>2.1</velocity.verison>
+        <hutool.verison>5.1.0</hutool.verison>
+        <fastjson.verison>1.2.47</fastjson.verison>
+        <mybatis.spring.boot.verison>2.1.3</mybatis.spring.boot.verison>
+        <mybatisplus.spring.boot.verison>3.2.0</mybatisplus.spring.boot.verison>
     </properties>
 
     <!-- dependencyManagement
@@ -37,7 +41,7 @@
         -->
     <dependencyManagement>
         <dependencies>
-            <!--spring boot 2.2.2-->
+            <!--spring boot 2.3.4-->
             <dependency>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-dependencies</artifactId>
@@ -45,7 +49,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!--spring cloud Hoxton.SR1-->
+            <!--spring cloud Hoxton.SR8-->
             <dependency>
                 <groupId>org.springframework.cloud</groupId>
                 <artifactId>spring-cloud-dependencies</artifactId>
@@ -53,7 +57,7 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
-            <!--spring cloud alibaba 2.1.0.RELEASE-->
+            <!--spring cloud alibaba 2.2.3.RELEASE-->
             <dependency>
                 <groupId>com.alibaba.cloud</groupId>
                 <artifactId>spring-cloud-alibaba-dependencies</artifactId>
@@ -71,13 +75,42 @@
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>druid-spring-boot-starter</artifactId>
-                <version>${druid.version}</version>
+                <version>${druid.verison}</version>
             </dependency>
             <!-- mybatis-springboot整合 -->
             <dependency>
                 <groupId>org.mybatis.spring.boot</groupId>
                 <artifactId>mybatis-spring-boot-starter</artifactId>
-                <version>${mybatis.spring.boot.version}</version>
+                <version>${mybatis.spring.boot.verison}</version>
+            </dependency>
+            <!-- mybatis-plus 整合 用mybatis-plus，就可以不用引入mybatis-spring-boot-starter了-->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>${mybatisplus.spring.boot.verison}</version>
+            </dependency>
+            <!--   mybatis-plus 自动生成代码         -->
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-generator</artifactId>
+                <version>${mybatisplus.spring.boot.verison}</version>
+            </dependency>
+            <!-- MyBatis-Plus模板引擎 -->
+            <dependency>
+                <groupId>org.apache.velocity</groupId>
+                <artifactId>velocity-engine-core</artifactId>
+                <version>${velocity.verison}</version>
+            </dependency>
+            <!--   swagger2 自动生成接口文档     -->
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger2</artifactId>
+                <version>${swagger2.verison}</version>
+            </dependency>
+            <dependency>
+                <groupId>io.springfox</groupId>
+                <artifactId>springfox-swagger-ui</artifactId>
+                <version>${swagger2.verison}</version>
             </dependency>
             <!--lombok-->
             <dependency>
@@ -97,6 +130,16 @@
                 <groupId>log4j</groupId>
                 <artifactId>log4j</artifactId>
                 <version>${log4j.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>cn.hutool</groupId>
+                <artifactId>hutool-all</artifactId>
+                <version>${hutool.verison}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>fastjson</artifactId>
+                <version>${fastjson.verison}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
