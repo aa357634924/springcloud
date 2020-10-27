@@ -2,6 +2,8 @@ package com.rj.springcloud.utils;
 
 
 import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.annotation.FieldFill;
+import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.core.exceptions.MybatisPlusException;
 import com.baomidou.mybatisplus.core.toolkit.StringPool;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
@@ -14,6 +16,7 @@ import com.baomidou.mybatisplus.generator.config.PackageConfig;
 import com.baomidou.mybatisplus.generator.config.StrategyConfig;
 import com.baomidou.mybatisplus.generator.config.TemplateConfig;
 import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
+import com.baomidou.mybatisplus.generator.config.po.TableFill;
 import com.baomidou.mybatisplus.generator.config.po.TableInfo;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
@@ -59,7 +62,7 @@ public class MybatisPlusCodeGenerator {
         // 设置数据库字段类型转换类
         dataSourceConfig.setTypeConvert(new MySqlTypeConvert());
         // 驱动连接的URL
-        dataSourceConfig.setUrl("jdbc:mysql://localhost:3307/cloud?characterEncoding=utf8&useSSL=false&serverTimezone=UTC&rewriteBatchedStatements=true");
+        dataSourceConfig.setUrl("jdbc:mysql://localhost:3307/cloud?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true");
         // 驱动名称
         dataSourceConfig.setDriverName("com.mysql.cj.jdbc.Driver");
         // 数据库连接用户名
@@ -103,7 +106,7 @@ public class MybatisPlusCodeGenerator {
         // controller命名格式
         globalConfig.setControllerName("%sController");
         // 主键ID类型
-//        globalConfig.setIdType(IdType.AUTO);
+        globalConfig.setIdType(IdType.ID_WORKER_STR);
         // 时间类型
         globalConfig.setDateType(DateType.ONLY_DATE);
         return globalConfig;
@@ -141,8 +144,9 @@ public class MybatisPlusCodeGenerator {
         strategyConfig.setNaming(NamingStrategy.underline_to_camel);
         // 数据库表字段映射到实体的命名策略,未指定按照 naming 执行
         strategyConfig.setColumnNaming(NamingStrategy.underline_to_camel);
+        String tablePrefix = scanner("表前缀(无前缀输入#，如：t_user,请输入: t_)").replaceAll("#", "");
         // 表前缀
-        strategyConfig.setTablePrefix("t_");
+        strategyConfig.setTablePrefix(tablePrefix);
         // 字段前缀
         strategyConfig.setFieldPrefix(new String[] {});
         // 自定义继承的Entity类全称，带包名
@@ -172,15 +176,20 @@ public class MybatisPlusCodeGenerator {
         // 设置Controller为RestController [false]
         strategyConfig.setRestControllerStyle(true);
         // mapping中驼峰转连字符 [false]
-        strategyConfig.setControllerMappingHyphenStyle(true);
+        strategyConfig.setControllerMappingHyphenStyle(false);
         // 是否生成实体时，生成字段注解
         strategyConfig.setEntityTableFieldAnnotationEnable(true);
+        //// 表填充字段 [null] 自动填充的配置
+        TableFill create_time = new TableFill("create_time", FieldFill.INSERT);//设置时的生成策略
+        TableFill update_time = new TableFill("update_time", FieldFill.INSERT_UPDATE);//设置更新时间的生成策略
+        ArrayList<TableFill> list = new ArrayList<>();
+        list.add(create_time);
+        list.add(update_time);
+        strategyConfig.setTableFillList(list);
         // 乐观锁属性名称
         // strategyConfig.setVersionFieldName();
         // 逻辑删除属性名称
         // strategyConfig.setLogicDeleteFieldName();
-        // 表填充字段 [null]
-        strategyConfig.setTableFillList(null);
         return strategyConfig;
     }
 
