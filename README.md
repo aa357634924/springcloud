@@ -31,3 +31,5 @@
 
 2）搭载swagger2，自动生成接口文档，访问路径为: 访问swagger路径：http://localhost:8080/mybatis/swagger-ui.html
 
+3）使用@SpringBootTest编写测试类时，测试类的包路径要和SpringApplication扫描的包路径一致才可以
+
