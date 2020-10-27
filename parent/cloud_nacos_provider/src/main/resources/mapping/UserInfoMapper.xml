@@ -3,23 +3,23 @@
 <mapper namespace="com.cloud.base.mapper.UserInfoMapper">
 
     <!-- 通用查询映射结果 -->
-    <resultMap id="baseResultMap" type="com.cloud.base.entity.UserInfo">
-        <id column="id" property="id" />
-        <result column="username" property="username" />
-        <result column="password" property="password" />
-        <result column="nickname" property="nickname" />
-        <result column="card_id" property="cardId" />
-        <result column="real_name" property="realName" />
-        <result column="sex" property="sex" />
-        <result column="address" property="address" />
-        <result column="phone" property="phone" />
-        <result column="email" property="email" />
-        <result column="oprator" property="oprator" />
-        <result column="operator_name" property="operatorName" />
-        <result column="status" property="status" />
-        <result column="create_time" property="createTime" />
-        <result column="update_time" property="updateTime" />
-        <result column="photo" property="photo" />
+    <resultMap id="BaseResultMap" type="com.cloud.base.entity.UserInfo">
+        <id column="id" property="id"/>
+        <result column="username" property="username"/>
+        <result column="password" property="password"/>
+        <result column="nickname" property="nickname"/>
+        <result column="card_id" property="cardId"/>
+        <result column="real_name" property="realName"/>
+        <result column="sex" property="sex"/>
+        <result column="address" property="address"/>
+        <result column="phone" property="phone"/>
+        <result column="email" property="email"/>
+        <result column="oprator" property="oprator"/>
+        <result column="operator_name" property="operatorName"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="photo" property="photo"/>
     </resultMap>
 
     <!-- 通用查询结果列 -->
@@ -76,11 +76,12 @@
         </if>
     </sql>
 
-    <select id="selectPageByCondition" resultMap="baseResultMap">
+    <select id="selectPageByCondition" resultMap="BaseResultMap">
         select
         <include refid="base_Column_List"></include>
         from user_info
-        <where><include refid="base_query_condition"></include>
+        <where>
+            <include refid="base_query_condition"></include>
         </where>
     </select>
 </mapper>

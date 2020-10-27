@@ -8,8 +8,12 @@ import com.cloud.base.entity.UserInfo;
 import com.cloud.base.mapper.UserInfoMapper;
 import com.cloud.base.service.UserInfoService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+import utils.BeanCopyUtils;
 
 import javax.annotation.Resource;
+
+import static org.springframework.transaction.annotation.Propagation.REQUIRED;
 
 /**
  * 用户信息表 服务实现类
@@ -23,13 +27,22 @@ public class UserInfoServiceImpl extends ServiceImpl<UserInfoMapper, UserInfo> i
     @Resource
     private UserInfoMapper mapper;
 
+
     @Override
-    public int create(UserInfoDTO userInfoDTO) {
-        return 0;
+    @Transactional(rollbackFor = Exception.class, propagation = REQUIRED)
+    public boolean create(UserInfoDTO userInfoDTO) throws Exception {
+        if (userInfoDTO != null) {
+            UserInfo userInfo = BeanCopyUtils.getBeanCopy(userInfoDTO, UserInfo.class);
+            boolean result = save(userInfo);
+            if (result) {
+                return result;
+            }
+        }
+        throw new Exception("");
     }
 
     @Override
-    public IPage<UserInfo> selectPageByCondition(Page<?> page, UserInfo obj){
-        return mapper.selectPageByCondition(page,obj);
+    public IPage<UserInfo> selectPageByCondition(Page<?> page, UserInfo obj) {
+        return mapper.selectPageByCondition(page, obj);
     }
 }

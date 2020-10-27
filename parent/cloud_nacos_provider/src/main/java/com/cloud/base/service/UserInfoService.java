@@ -22,7 +22,7 @@ public interface UserInfoService extends IService<UserInfo> {
      * @author hua.yang
      * @date 2020/10/27 12:28:00
      */
-    public int create(UserInfoDTO userInfoDTO);
+    public boolean create(UserInfoDTO userInfoDTO) throws Exception;
 
     public IPage<UserInfo> selectPageByCondition(Page<?> page, UserInfo obj);
 }
