@@ -17,13 +17,15 @@ CREATE TABLE `user_info` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `photo` varchar(255) DEFAULT NULL COMMENT '头像地址',
+  `version` int(11) NOT NULL COMMENT '版本号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
 CREATE TABLE `t_test` (
-  `id` varchar(64) NOT NULL,
-  `username` varchar(100) NOT NULL,
+  `id` varchar(64) NOT NULL COMMENT '主键ID',
+  `username` varchar(100) NOT NULL COMMENT '用户名',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
+  `version` int(11) NOT NULL COMMENT '版本号',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='测试表';

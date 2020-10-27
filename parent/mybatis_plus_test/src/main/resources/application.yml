@@ -46,6 +46,3 @@ mybatis-plus:
     #sql-injector: com.baomidou.mybatisplus.mapper.LogicSqlInjector
     #自定义填充策略接口实现
     #meta-object-handler: com.baomidou.springboot.xxx
-  configuration:
-    log-impl: org.apache.ibatis.logging.nologging.NoLoggingImpl #日志输入
-

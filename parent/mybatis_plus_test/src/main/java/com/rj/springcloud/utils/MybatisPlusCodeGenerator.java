@@ -183,12 +183,14 @@ public class MybatisPlusCodeGenerator {
         //// 表填充字段 [null] 自动填充的配置
         TableFill create_time = new TableFill("create_time", FieldFill.INSERT);//设置时的生成策略
         TableFill update_time = new TableFill("update_time", FieldFill.INSERT_UPDATE);//设置更新时间的生成策略
+        TableFill version = new TableFill("version", FieldFill.INSERT);//设置乐观锁，新增的时候设置一个默认值，修改的时候不需要设置
         ArrayList<TableFill> list = new ArrayList<>();
         list.add(create_time);
         list.add(update_time);
+        list.add(version);
         strategyConfig.setTableFillList(list);
         // 乐观锁属性名称
-        // strategyConfig.setVersionFieldName();
+         strategyConfig.setVersionFieldName("version");
         // 逻辑删除属性名称
         // strategyConfig.setLogicDeleteFieldName();
         return strategyConfig;

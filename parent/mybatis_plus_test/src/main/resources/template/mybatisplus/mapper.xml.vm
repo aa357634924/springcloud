@@ -37,20 +37,19 @@
 
     <!-- 通用查询条件列 -->
     <sql id="base_query_condition">
-#foreach($field in ${table.fields})
-    #if(!${field.keyFlag})##生成普通字段
+    #foreach($field in ${table.fields})
         <if test="obj.${field.propertyName} != null and obj.${field.propertyName} != ''">
-            and ${field.name} = obj.${field.propertyName}}
+            and ${field.name} = #{obj.${field.propertyName}}
         </if>
     #end
-#end
     </sql>
 
     <select id="selectPageByCondition" resultMap="baseResultMap">
         select
         <include refid="base_Column_List"></include>
         from ${table.name}
-        <where><include refid="base_query_condition"></include>
+        <where>
+            <include refid="base_query_condition"></include>
         </where>
     </select>
 </mapper>

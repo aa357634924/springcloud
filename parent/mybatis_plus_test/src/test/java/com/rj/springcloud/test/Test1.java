@@ -1,5 +1,6 @@
 package com.rj.springcloud.test;
 
+import com.rj.springcloud.user.mapper.TestMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
@@ -25,7 +26,14 @@ public class Test1 {
     private static final Logger LOGGER = LoggerFactory.getLogger(Test1.class);
 
     @Autowired
-//    private TestMapper mapper;
+    private TestMapper mapper;
+
+    @Test
+    public void testOptimisticLocker(){
+        com.rj.springcloud.user.entity.Test test = mapper.selectById("1321128728799219714");
+        test.setUsername("fff");
+        mapper.updateById(test);
+    }
 
     @Test
     public void print(){
