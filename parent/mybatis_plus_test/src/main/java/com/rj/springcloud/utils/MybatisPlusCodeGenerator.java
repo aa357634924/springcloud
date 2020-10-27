@@ -1,6 +1,7 @@
 package com.rj.springcloud.utils;
 
 
+import cn.hutool.setting.dialect.Props;
 import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.IdType;
@@ -29,7 +30,7 @@ import java.util.Scanner;
 
 /**
  * TODO
- *  自动生成代码，先输入模块名，再输入模块下对应的数据库表名即可（数据库表名用英文逗号分隔）
+ *  mybatis-plus-generator 自动生成代码
  * @author rj
  * @version 1.0
  * @date 2020-10-26 19:50
@@ -53,7 +54,7 @@ public class MybatisPlusCodeGenerator {
     }
 
     // 数据库相关配置
-    private static DataSourceConfig getDataSourceConfig() {
+    private static DataSourceConfig getDataSourceConfig(String url,String driverName,String username,String password) {
         DataSourceConfig dataSourceConfig = new DataSourceConfig();
         // 数据库类型
         dataSourceConfig.setDbType(DbType.MYSQL);
@@ -62,18 +63,18 @@ public class MybatisPlusCodeGenerator {
         // 设置数据库字段类型转换类
         dataSourceConfig.setTypeConvert(new MySqlTypeConvert());
         // 驱动连接的URL
-        dataSourceConfig.setUrl("jdbc:mysql://localhost:3307/cloud?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true");
+        dataSourceConfig.setUrl(url);
         // 驱动名称
-        dataSourceConfig.setDriverName("com.mysql.cj.jdbc.Driver");
+        dataSourceConfig.setDriverName(driverName);
         // 数据库连接用户名
-        dataSourceConfig.setUsername("root");
+        dataSourceConfig.setUsername(username);
         // 密码
-        dataSourceConfig.setPassword("root");
+        dataSourceConfig.setPassword(password);
         return dataSourceConfig;
     }
 
     // 全局配置
-    private static GlobalConfig getGlobalConfig(String projectPath) {
+    private static GlobalConfig getGlobalConfig(String projectPath,String author) {
         GlobalConfig globalConfig = new GlobalConfig();
         // 生成文件的输出目录 [默认为D://]
         globalConfig.setOutputDir(projectPath + "/src/main/java");
@@ -86,7 +87,7 @@ public class MybatisPlusCodeGenerator {
         // 是否在xml中添加二级缓存配置 [true]
         globalConfig.setEnableCache(false);
         // 设置作者(在生成的注解中显示) [默认为空]
-        globalConfig.setAuthor("rj");
+        globalConfig.setAuthor(author);
         // 开启kotlin模式 [false]
         globalConfig.setKotlin(false);
         // 开启ActiveRecord模式 [false]
@@ -113,10 +114,10 @@ public class MybatisPlusCodeGenerator {
     }
 
     // 跟包相关的配置项
-    private static PackageConfig getPackageConfig(String parentPath) {
+    private static PackageConfig getPackageConfig(String parentPackagePath) {
         PackageConfig packageConfig = new PackageConfig();
         // 父包名。如果为空，将下面子包名必须写全部， 否则就只需写子包名
-        packageConfig.setParent(parentPath);
+        packageConfig.setParent(parentPackagePath);
         // 父包模块名
         packageConfig.setModuleName(scanner("模块名"));
         /***   下边的可以不用配置   ***/
@@ -144,7 +145,7 @@ public class MybatisPlusCodeGenerator {
         strategyConfig.setNaming(NamingStrategy.underline_to_camel);
         // 数据库表字段映射到实体的命名策略,未指定按照 naming 执行
         strategyConfig.setColumnNaming(NamingStrategy.underline_to_camel);
-        String tablePrefix = scanner("表前缀(无前缀输入#，如：t_user,请输入: t_)").replaceAll("#", "");
+        String tablePrefix = scanner("表前缀(如：t_user,请输入: t_；无前缀则不需要输入)");
         // 表前缀
         strategyConfig.setTablePrefix(tablePrefix);
         // 字段前缀
@@ -176,7 +177,7 @@ public class MybatisPlusCodeGenerator {
         // 设置Controller为RestController [false]
         strategyConfig.setRestControllerStyle(true);
         // mapping中驼峰转连字符 [false]
-        strategyConfig.setControllerMappingHyphenStyle(false);
+        strategyConfig.setControllerMappingHyphenStyle(true);
         // 是否生成实体时，生成字段注解
         strategyConfig.setEntityTableFieldAnnotationEnable(true);
         //// 表填充字段 [null] 自动填充的配置
@@ -195,21 +196,21 @@ public class MybatisPlusCodeGenerator {
 
     // 设置生成模板,如果不设置,则使用mybatisplus默认的模板,
     // 所有的模板在mybatis-plus-generator-3.2.0.jar包下的templates文件夹下面，可以复制到resources目录下使用
-    private static TemplateConfig getTemplateConfig() {
+    private static TemplateConfig getTemplateConfig(String templatePath) {
         TemplateConfig templateConfig = new TemplateConfig();
         //指定自定义模板路径，注意不要带上.ftl/.vm, 会根据使用的模板引擎自动识别
-        templateConfig.setEntity("template/mybatisplus/entity.java");
-        templateConfig.setService("template/mybatisplus/service.java");
-        templateConfig.setServiceImpl("template/mybatisplus/serviceImpl.java");
-        templateConfig.setController("template/mybatisplus/controller.java");
-        templateConfig.setMapper("template/mybatisplus/mapper.java");
-//        templateConfig.setXml("template/mybatisplus/mapper.xml");
+        templateConfig.setEntity(templatePath+"/entity.java");
+        templateConfig.setService(templatePath+"/service.java");
+        templateConfig.setServiceImpl(templatePath+"/serviceImpl.java");
+        templateConfig.setController(templatePath+"/controller.java");
+        templateConfig.setMapper(templatePath+"/mapper.java");
+//        templateConfig.setXml(templatePath+"/mapper.xml");
         templateConfig.setXml(null);
         return templateConfig;
     }
 
     //自定义配置
-    private static InjectionConfig getInjectionConfig(PackageConfig pc,String projectPath) {
+    private static InjectionConfig getInjectionConfig(PackageConfig pc,String projectPath,String templatePath) {
         InjectionConfig cfg = new InjectionConfig() {
             //自定义属性注入:abc
             //在.ftl(或者是.vm)模板中，通过${cfg.abc}获取属性
@@ -221,7 +222,7 @@ public class MybatisPlusCodeGenerator {
         // 如果模板引擎是 freemarker
 //        String templatePath = "/templates/mapper.xml.ftl";
         // 如果模板引擎是 velocity
-        String templatePath = "/template/mybatisplus/mapper.xml.vm";
+        templatePath = templatePath + "/mapper.xml.vm";
         // 自定义输出配置
         List<FileOutConfig> focList = new ArrayList<>();
         // 自定义配置会被优先输出
@@ -252,30 +253,34 @@ public class MybatisPlusCodeGenerator {
         return cfg;
     }
 
-    /**
-     * 使用方法：输入模块名称和数据库中的表名即可自动创建代码
-     * 修改的地方：
-     *  1.全局配置修改存放路径
-     *  2.数据源配置修改数据库连接配置
-     *  3.包配置修改生成的package路径
-     *  4.策略配置修改生成文件的各种属性名称及属性配置
-     *  5.模板配置修改自动创建文件使用的模板信息
-     *  6.自定义配置单独修改mapper.xml文件的存放路径
-     * */
     public static void main(String[] args) {
+        //读取配置信息
+        Props prop = Props.getProp("mybatisPlusGenerator.yml", "utf-8");
+        String driverName = prop.getProperty("driverName").trim();
+        String url = prop.getProperty("url").trim();
+        String username = prop.getProperty("username").trim();
+        String password = prop.getProperty("password").trim();
+        String templatePath = prop.getProperty("templatePath").trim();
+        String author = prop.getProperty("author").trim();
+        String projectPath = prop.getProperty("projectPath").trim();
+        String parentPackagePath = prop.getProperty("parentPackagePath").trim();
+
+        //执行代码自动生成
         // 代码生成器
         AutoGenerator mpg = new AutoGenerator();
         // 全局配置  user.dir 项目根路径
-        String projectPath = System.getProperty("user.dir")+"/parent/mybatis_plus_test";
-        GlobalConfig gc = getGlobalConfig(projectPath);
+        if(StringUtils.isEmpty(projectPath)){
+            projectPath = System.getProperty("user.dir");
+        }
+        GlobalConfig gc = getGlobalConfig(projectPath,author);
         mpg.setGlobalConfig(gc);
 
         // 数据源配置
-        DataSourceConfig dataSourceConfig = getDataSourceConfig();
+        DataSourceConfig dataSourceConfig = getDataSourceConfig(url,driverName,username,password);
         mpg.setDataSource(dataSourceConfig);
 
         // 包配置
-        PackageConfig pc = getPackageConfig("com.rj.springcloud");
+        PackageConfig pc = getPackageConfig(parentPackagePath);
         mpg.setPackageInfo(pc);
 
         // 策略配置
@@ -283,16 +288,15 @@ public class MybatisPlusCodeGenerator {
         mpg.setStrategy(strategy);
 
         // 配置模板
-        TemplateConfig templateConfig = getTemplateConfig();
+        TemplateConfig templateConfig = getTemplateConfig(templatePath);
         mpg.setTemplate(templateConfig);
         // 配置模板引擎
 //        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
         mpg.setTemplateEngine(new VelocityTemplateEngine());
 
         // 自定义配置
-        InjectionConfig cfg = getInjectionConfig(pc,projectPath);
+        InjectionConfig cfg = getInjectionConfig(pc,projectPath,templatePath);
         mpg.setCfg(cfg);
-
         mpg.execute();
     }
 }

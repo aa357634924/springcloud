@@ -13,7 +13,8 @@ import java.util.Date;
 
 /**
  * TODO
- *
+ *  1.配置分页对象
+ *  2.添加、修改时，自动填充创建时间和修改时间
  * @author rj
  * @version 1.0
  * @date 2020-10-26 13:28
@@ -21,6 +22,9 @@ import java.util.Date;
 @EnableTransactionManagement
 @Configuration
 public class MyBatisPlusConfig implements MetaObjectHandler {
+    /**
+     * 此处不配置，分页不生效
+     * */
     @Bean
     public PaginationInterceptor paginationInterceptor(){
         PaginationInterceptor paginationInterceptor = new PaginationInterceptor();

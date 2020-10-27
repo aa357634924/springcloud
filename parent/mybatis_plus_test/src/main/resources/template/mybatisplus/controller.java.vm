@@ -40,7 +40,8 @@ import ${superControllerClassPackage};
 #else
 @Controller
 #end
-@RequestMapping("#if(${table.controllerName})/${table.controllerName}#end#if(${controllerMappingHyphenStyle})#else${table.entityPath}#end")
+##@RequestMapping("#if(${table.controllerName})/${table.controllerName}#end#if(${controllerMappingHyphenStyle})#else${table.entityPath}#end")
+@RequestMapping("/${table.entityPath}")
 #if(${kotlin})
 class ${table.controllerName}#if(${superControllerClass}) : ${superControllerClass}()#end
 

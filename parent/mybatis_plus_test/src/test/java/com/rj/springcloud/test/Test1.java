@@ -33,4 +33,9 @@ public class Test1 {
 //        List list = mapper.selectList(null);
 //        System.out.println(list);
     }
+
+    @Test
+    public void getPath(){
+        System.out.println(System.getProperties().getProperty("server.port"));
+    }
 }

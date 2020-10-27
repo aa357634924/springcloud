@@ -1,5 +1,5 @@
 # springcloud
-一、springclod-版本信息
+* springclod-版本信息
 
      spring-cloud-dependencies H.SR8
      spring-boot-dependencies 2.3.4.RELEASE
@@ -22,14 +22,19 @@
              <mybatisplus.spring.boot.verison>3.2.0</mybatisplus.spring.boot.verison>
          </properties>
      
-二、项目介绍
+* 项目介绍
 
-项目1：mybatis_plus_test
+* 项目1：mybatis_plus_test
 
-1）自动生成controller、service、serviceImpl、entity、mapper、mapper.xml
+    * 1）自动生成controller、service、serviceImpl、entity、mapper、mapper.xml
 注：自动生成entity时，druid版本需要1.1.20以上，否则时间类型的字段会报错
 
-2）搭载swagger2，自动生成接口文档，访问路径为: 访问swagger路径：http://localhost:8080/mybatis/swagger-ui.html
+    * 2）搭载swagger2，自动生成接口文档，访问路径为: 访问swagger路径：http://localhost:8080/mybatis/swagger-ui.html
 
-3）使用@SpringBootTest编写测试类时，测试类的包路径要和SpringApplication扫描的包路径一致才可以
+    * 3）使用@SpringBootTest编写测试类时，测试类的包路径要和SpringApplication扫描的包路径一致才可以
 
+    * 4） mybatis-plus-generator使用方法：
+         * 1.将mybatis-plus的模板文件复制到resources目录下
+         * 2.在resources跟目录下创建mybatisPlusGenerator.yml
+         * 3.在mybatisPlusGenerator.yml中填写属性配置
+         * 4.执行main方法，输入模块名称、表头格式、表名即可自动创建代码（多个表名之间用英文逗号分隔）

@@ -13,11 +13,11 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
 /**
  * TODO
- *
+ *  配置swagger2自动生成接口文档
+ *  访问swagger路径：http://localhost:8080/mybatis/swagger-ui.html
  * @author rj
  * @version 1.0
  * @date 2020-10-26 20:05
- * 访问swagger路径：http://localhost:8080/mybatis/swagger-ui.html
  */
 @Configuration
 @EnableSwagger2

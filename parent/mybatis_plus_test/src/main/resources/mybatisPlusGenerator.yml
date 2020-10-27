@@ -1,0 +1,13 @@
+#数据库驱动包
+driverName: com.mysql.cj.jdbc.Driver
+url: jdbc:mysql://localhost:3307/cloud?characterEncoding=utf8&useSSL=false&serverTimezone=GMT%2B8&rewriteBatchedStatements=true
+username: root
+password: root
+#模板存放路径
+templatePath: /template/mybatisplus
+#作者名称
+author: rj
+#父包路径
+parentPackagePath: com.rj.springcloud
+#若不配置，默认存放在工程根路径下
+projectPath: /Users/rj/Desktop/java/springcloud/parent/mybatis_plus_test
