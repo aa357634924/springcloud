@@ -1,9 +1,17 @@
 package com.rj.springcloud.config;
 
+import com.baomidou.mybatisplus.annotation.DbType;
+import com.baomidou.mybatisplus.autoconfigure.ConfigurationCustomizer;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 
+
+import com.baomidou.mybatisplus.core.injector.ISqlInjector;
+import com.baomidou.mybatisplus.extension.injector.methods.LogicDeleteByIdWithFill;
+import com.baomidou.mybatisplus.extension.plugins.MybatisPlusInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.OptimisticLockerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.PaginationInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.OptimisticLockerInnerInterceptor;
+import com.baomidou.mybatisplus.extension.plugins.inner.PaginationInnerInterceptor;
 import com.baomidou.mybatisplus.extension.plugins.pagination.optimize.JsqlParserCountOptimize;
 import org.apache.ibatis.reflection.MetaObject;
 import org.springframework.context.annotation.Bean;
@@ -24,29 +32,23 @@ import java.util.Date;
 @EnableTransactionManagement
 @Configuration
 public class MyBatisPlusConfig implements MetaObjectHandler {
+
     /**
-     * 此处不配置，分页不生效
+     * 分页插件
      */
     @Bean
-    public PaginationInterceptor paginationInterceptor() {
-        PaginationInterceptor paginationInterceptor = new PaginationInterceptor();
-        // 设置请求的页面大于最大页后操作， true调回到首页，false 继续请求  默认false
-        // paginationInterceptor.setOverflow(false);
-        // 设置最大单页限制数量，默认 500 条，-1 不受限制
-        // paginationInterceptor.setLimit(500);
-        // 设置方言
-        paginationInterceptor.setDialectType("mysql");
-        // 开启 count 的 join 优化,只针对 left join !!!
-        paginationInterceptor.setCountSqlParser(new JsqlParserCountOptimize(true));
-        return paginationInterceptor;
+    public MybatisPlusInterceptor mybatisPlusInterceptor() {
+        MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+        interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+        return interceptor;
     }
 
     /**
      * 乐观锁插件
      * */
     @Bean
-    public OptimisticLockerInterceptor optimisticLockerInterceptor() {
-        return new OptimisticLockerInterceptor();
+    public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
+        return new OptimisticLockerInnerInterceptor();
     }
 
     /**
@@ -71,6 +73,8 @@ public class MyBatisPlusConfig implements MetaObjectHandler {
         }
         //乐观锁版本号  新增的时候需要设置一个默认值，修改的时候mybatis-plus会自动添加
         setFieldValByName("version", 1, metaObject);
+        //逻辑删除，新增数据时，增加默认值0-未删除
+        setFieldValByName("deleted", 0, metaObject);
     }
 
     /**

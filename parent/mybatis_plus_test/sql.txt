@@ -1,25 +1,3 @@
---  2020年10月21日
---  创建一个用户信息表
-CREATE TABLE `user_info` (
-  `id` varchar(64) NOT NULL COMMENT '主键ID',
-  `username` varchar(100) NOT NULL COMMENT '用户名',
-  `password` varchar(255) NOT NULL COMMENT '密码',
-  `nickname` varchar(100) NOT NULL COMMENT '昵称',
-  `card_id` varchar(20) NOT NULL COMMENT '身份证号',
-  `real_name` varchar(100) NOT NULL COMMENT '真实姓名',
-  `sex` varchar(2) DEFAULT NULL COMMENT '性别（01:男；02：女）',
-  `address` varchar(255) DEFAULT NULL COMMENT '家庭住址',
-  `phone` varchar(20) DEFAULT NULL COMMENT '手机号码',
-  `email` varchar(255) DEFAULT NULL COMMENT '电子邮箱',
-  `oprator` varchar(20) DEFAULT NULL COMMENT '操作人id',
-  `operator_name` varchar(100) DEFAULT NULL COMMENT '操作人名称',
-  `status` varchar(2) NOT NULL COMMENT '状态（01：启用；02：禁用）',
-  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
-  `update_time` datetime DEFAULT NULL COMMENT '修改时间',
-  `photo` varchar(255) DEFAULT NULL COMMENT '头像地址',
-  `version` int(11) NOT NULL COMMENT '版本号',
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='用户信息表';
 
 CREATE TABLE `t_test` (
   `id` varchar(64) NOT NULL COMMENT '主键ID',
@@ -27,5 +5,6 @@ CREATE TABLE `t_test` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '修改时间',
   `version` int(11) NOT NULL COMMENT '版本号',
+  `deleted` boolean NOT NULL COMMENT '是否删除，0-未删除；1-已删除',
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 COMMENT='测试表';

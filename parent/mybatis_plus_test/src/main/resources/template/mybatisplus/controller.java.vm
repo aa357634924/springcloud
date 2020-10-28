@@ -6,8 +6,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.apache.commons.lang3.StringUtils;
+import java.util.Arrays;
+import java.util.List;
+
 import ${package.Service}.${table.serviceName};
 import ${package.Entity}.${entity};
 
@@ -65,13 +70,51 @@ public class ${table.controllerName} {
         return "saveOrUpdate success...";
     }
 
-    @ApiOperation(value="根据条件进行分页查询", notes="根据条件进行分页查询", produces="application/json")
+    @ApiOperation(value="根据条件进行查询-分页（会查询出逻辑删除掉的数据）", notes="根据条件进行查询-分页（会查询出逻辑删除掉的数据）", produces="application/json")
     @RequestMapping(value = "/findPageByCondition",method = RequestMethod.POST)
     public IPage<${entity}> findPageByCondition(${entity} obj){
         Page<${entity}> page = new Page<${entity}>();
         IPage<${entity}> iPage = service.selectPageByCondition(page, obj);
         LOGGER.info("findPageByCondition success...");
         return iPage;
+    }
+
+    @ApiOperation(value="根据条件进行查询-分页（不会查询出逻辑删除掉的数据）", notes="根据条件进行查询-分页（不会查询出逻辑删除掉的数据）", produces="application/json")
+    @RequestMapping(value = "/findByCondition",method = RequestMethod.POST)
+    public Page<${entity}> findByCondition(${entity} obj){
+        QueryWrapper<${entity}> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like("username",obj.getUsername());
+        Page<${entity}> page = service.page(new Page<${entity}>(), queryWrapper);
+        LOGGER.info("findByCondition success...");
+        return page;
+    }
+
+    @ApiOperation(value="根据条件进行查询-不分页（会查询出逻辑删除掉的数据）", notes="根据条件进行查询-不分页（会查询出逻辑删除掉的数据）", produces="application/json")
+    @RequestMapping(value = "/findListByCondition",method = RequestMethod.POST)
+    public List<${entity}> findListByCondition(${entity} obj){
+        List<${entity}> list = service.selectList(obj);
+        LOGGER.info("findListByCondition success...");
+        return list;
+    }
+
+    @ApiOperation(value="根据ID删除数据", notes="根据ID删除数据", produces="application/json")
+    @RequestMapping(value = "/deleteById",method = RequestMethod.POST)
+    public String deleteById(String id){
+        service.removeById(id);
+        LOGGER.info("deleteById success...");
+        return "deleteById success";
+    }
+
+    @ApiOperation(value="根据ID拼接的字符串批量删除数据", notes="根据ID拼接的字符串批量删除数据", produces="application/json")
+    @RequestMapping(value = "/deleteByIds",method = RequestMethod.POST)
+    public String deleteByIds(String ids){
+        if(StringUtils.isEmpty(ids)){
+            return "ids为空，未删除任何数据";
+        }
+        String[] idArr = ids.split(",");
+        service.removeByIds(Arrays.asList(idArr));
+        LOGGER.info("deleteById success...");
+        return "deleteById success";
     }
 }
 

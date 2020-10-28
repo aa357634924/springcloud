@@ -19,7 +19,7 @@
              <hutool.verison>5.1.0</hutool.verison>
              <fastjson.verison>1.2.47</fastjson.verison>
              <mybatis.spring.boot.verison>2.1.3</mybatis.spring.boot.verison>
-             <mybatisplus.spring.boot.verison>3.2.0</mybatisplus.spring.boot.verison>
+             <mybatisplus.spring.boot.verison>3.4.0</mybatisplus.spring.boot.verison>
          </properties>
      
 * 项目介绍
@@ -44,12 +44,34 @@
         * 2.实体类中version字段增加 @Version 和 @TableField(value = "version", fill = FieldFill.INSERT)
         * 3.在任意一个@Configuration配置类中引入乐观锁插件（此系统所有关于mybatis的配置统一在MybatisPlusConfig.java中进行设置）
             @Bean
-            public OptimisticLockerInterceptor optimisticLockerInterceptor() {
-                return new OptimisticLockerInterceptor();
+            public OptimisticLockerInnerInterceptor optimisticLockerInnerInterceptor() {
+                return new OptimisticLockerInnerInterceptor();
             }
         * 4.MetaObjectHandler.insertFill中对version设置一个初始值
             //乐观锁版本号  新增的时候需要设置一个默认值，修改的时候mybatis-plus会自动添加
             setFieldValByName("version", 1, metaObject);
             
-        
+    * 6）分页插件
+        * 1.在任意一个@Configuration配置类中引入乐观锁插件（此系统所有关于mybatis的配置统一在MybatisPlusConfig.java中进行设置）
+            @Bean
+            public MybatisPlusInterceptor mybatisPlusInterceptor() {
+                MybatisPlusInterceptor interceptor = new MybatisPlusInterceptor();
+                interceptor.addInnerInterceptor(new PaginationInnerInterceptor(DbType.MYSQL));
+                return interceptor;
+            } 
+        * 2.使用Page和QueryWrapper进行分页查询
+            QueryWrapper<Test> queryWrapper = new QueryWrapper<>();
+            queryWrapper.like("username",obj.getUsername());
+            Page<Test> page = service.page(new Page<Test>(), queryWrapper); 
+            
+    * 7）逻辑删除
+        * 1.application.yml中引入逻辑删除的配置
+            logic-delete-value: 1 # 逻辑已删除值(默认为 1)
+            logic-not-delete-value: 0 # 逻辑未删除值(默认为 0)
+        * 2.数据库表中增加一个boolean字段，名字自己定义，此处设置为"deleted"
+        * 3.entity实体类中增加 @TableLogic 逻辑删除标识
+            @TableField(value = "deleted", fill = FieldFill.INSERT)
+            @TableLogic
+        * 4.MetaObjectHandler.insertFill中对 "deleted" 设置一个初始值 0
+            setFieldValByName("deleted", 0, metaObject);
     

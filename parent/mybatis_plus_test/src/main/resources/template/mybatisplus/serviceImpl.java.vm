@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import javax.annotation.Resource;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import java.util.List;
 
 /**
  * $!{table.comment} 服务实现类
@@ -29,6 +30,11 @@ public class ${table.serviceImplName} extends ${superServiceImplClass}<${table.m
     @Override
     public IPage<${entity}> selectPageByCondition(Page<?> page, ${entity} obj){
         return mapper.selectPageByCondition(page,obj);
+    }
+
+    @Override
+    public List<${entity}> selectList(${entity} obj){
+        return mapper.selectList(null);
     }
 }
 #end

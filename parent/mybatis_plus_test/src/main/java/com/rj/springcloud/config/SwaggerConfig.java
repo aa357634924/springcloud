@@ -35,7 +35,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage(SWAGGER_SCAN_BASE_PACKAGE))
                 .paths(PathSelectors.any())// 可以根据url路径设置哪些请求加入文档，忽略哪些请求
                 .build().apiInfo(new ApiInfoBuilder()
-                        .title("SpringBoot整合Swagger")//设置文档的标题
+                        .title("SpringBoot整合mybatis-plus、mybatis-plus-generator、Swagger")//设置文档的标题
                         .description("系统框架：SpringBoot、mybatis-plus、log4j2、Swagger2、mysql5.7、jdk1.8、maven")// 设置文档的描述
                         .version(VERSION)// 设置文档的版本信息-> 1.0.0 Version information
                         .contact(new Contact("git地址：", "https://github.com/aa357634924/springcloud/tree/main/parent/mybatis_plus_test", "357634924@qq.com"))
