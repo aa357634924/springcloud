@@ -13,7 +13,8 @@ spring:
     username: root
     password: root
   jackson:
-    date-format: yyyy-MM-dd HH:mm:ss
+    date-format: yyyy-MM-dd HH:mm:ss #  返回json的全局格式化时间
+    time-zone: GMT+8 #不加此项，时间会少8个小时
   profiles:
     active: dev #dev-开发环境:application-dev.yml；test-测试环境:application-test.yml；prod-生产环境:application-prod.yml
 
