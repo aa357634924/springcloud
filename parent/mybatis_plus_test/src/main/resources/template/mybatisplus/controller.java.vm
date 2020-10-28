@@ -89,14 +89,6 @@ public Page<${entity}> findByCondition(${entity} obj){
         return page;
         }
 
-@ApiOperation(value="根据条件进行查询-不分页（会查询出逻辑删除掉的数据）", notes="根据条件进行查询-不分页（会查询出逻辑删除掉的数据）", produces="application/json")
-@RequestMapping(value = "/findListByCondition",method = RequestMethod.POST)
-public List<${entity}> findListByCondition(${entity} obj){
-        List<${entity}> list = service.selectList(obj);
-        LOGGER.info("findListByCondition success...");
-        return list;
-        }
-
 @ApiOperation(value="根据ID删除数据", notes="根据ID删除数据", produces="application/json")
 @RequestMapping(value = "/deleteById",method = RequestMethod.POST)
 public String deleteById(String id){
