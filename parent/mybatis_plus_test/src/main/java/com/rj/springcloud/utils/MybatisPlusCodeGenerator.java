@@ -18,6 +18,7 @@ import com.baomidou.mybatisplus.generator.config.rules.NamingStrategy;
 import com.baomidou.mybatisplus.generator.engine.VelocityTemplateEngine;
 import org.apache.commons.lang3.StringUtils;
 
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -30,6 +31,53 @@ import java.util.Scanner;
  * @date 2020-10-26 19:50
  */
 public class MybatisPlusCodeGenerator {
+    public static void main(String[] args) {
+        //读取配置信息
+        Props prop = Props.getProp("mybatisPlusGenerator.yml", "utf-8");
+        String driverName = prop.getProperty("driverName").trim();
+        String url = prop.getProperty("url").trim();
+        String username = prop.getProperty("username").trim();
+        String password = prop.getProperty("password").trim();
+        String templatePath = prop.getProperty("templatePath").trim();
+        String author = prop.getProperty("author").trim();
+        String projectPath = prop.getProperty("projectPath").trim();
+        String parentPackagePath = prop.getProperty("parentPackagePath").trim();
+
+        //执行代码自动生成
+        // 代码生成器
+        AutoGenerator mpg = new AutoGenerator();
+        // 全局配置  user.dir 项目根路径
+        if(StringUtils.isEmpty(projectPath)){
+            projectPath = System.getProperty("user.dir");
+        }
+        GlobalConfig gc = getGlobalConfig(projectPath,author);
+        mpg.setGlobalConfig(gc);
+
+        // 数据源配置
+        DataSourceConfig dataSourceConfig = getDataSourceConfig(url,driverName,username,password);
+        mpg.setDataSource(dataSourceConfig);
+
+        // 包配置
+        PackageConfig pc = getPackageConfig(parentPackagePath);
+        mpg.setPackageInfo(pc);
+
+        // 策略配置
+        StrategyConfig strategy = getStrategyConfig();
+        mpg.setStrategy(strategy);
+
+        // 配置模板
+        TemplateConfig templateConfig = getTemplateConfig(templatePath);
+        mpg.setTemplate(templateConfig);
+        // 配置模板引擎
+//        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
+        mpg.setTemplateEngine(new VelocityTemplateEngine());
+
+        // 自定义配置
+        InjectionConfig cfg = getInjectionConfig(pc,projectPath,templatePath);
+        mpg.setCfg(cfg);
+        mpg.execute();
+    }
+
     /**
      * 读取控制台内容
      */
@@ -101,7 +149,7 @@ public class MybatisPlusCodeGenerator {
         // controller命名格式
         globalConfig.setControllerName("%sController");
         // 主键ID类型
-        globalConfig.setIdType(IdType.ID_WORKER_STR);
+        globalConfig.setIdType(IdType.INPUT);
         // 时间类型
         globalConfig.setDateType(DateType.ONLY_DATE);
         return globalConfig;
@@ -175,20 +223,20 @@ public class MybatisPlusCodeGenerator {
         // 是否生成实体时，生成字段注解
         strategyConfig.setEntityTableFieldAnnotationEnable(true);
         //// 表填充字段 [null] 自动填充的配置
-        TableFill create_time = new TableFill("create_time", FieldFill.INSERT);//设置时的生成策略
-        TableFill update_time = new TableFill("update_time", FieldFill.INSERT_UPDATE);//设置更新时间的生成策略
+        TableFill gmt_create = new TableFill("gmt_create", FieldFill.INSERT);//设置时的生成策略
+        TableFill gmt_modified = new TableFill("gmt_modified", FieldFill.INSERT_UPDATE);//设置更新时间的生成策略
         TableFill version = new TableFill("version", FieldFill.INSERT);//设置乐观锁，新增的时候设置一个默认值，修改的时候不需要设置
-        TableFill deleted = new TableFill("deleted", FieldFill.INSERT);//设置逻辑删除
+        TableFill is_deleted = new TableFill("is_deleted", FieldFill.INSERT);//设置逻辑删除
         ArrayList<TableFill> list = new ArrayList<>();
-        list.add(create_time);
-        list.add(update_time);
+        list.add(gmt_create);
+        list.add(gmt_modified);
         list.add(version);
-        list.add(deleted);
+        list.add(is_deleted);
         strategyConfig.setTableFillList(list);
         // 乐观锁属性名称
          strategyConfig.setVersionFieldName("version");
         // 逻辑删除属性名称
-         strategyConfig.setLogicDeleteFieldName("deleted");
+        strategyConfig.setLogicDeleteFieldName("is_deleted");
         return strategyConfig;
     }
 
@@ -249,52 +297,5 @@ public class MybatisPlusCodeGenerator {
         */
         cfg.setFileOutConfigList(focList);
         return cfg;
-    }
-
-    public static void main(String[] args) {
-        //读取配置信息
-        Props prop = Props.getProp("mybatisPlusGenerator.yml", "utf-8");
-        String driverName = prop.getProperty("driverName").trim();
-        String url = prop.getProperty("url").trim();
-        String username = prop.getProperty("username").trim();
-        String password = prop.getProperty("password").trim();
-        String templatePath = prop.getProperty("templatePath").trim();
-        String author = prop.getProperty("author").trim();
-        String projectPath = prop.getProperty("projectPath").trim();
-        String parentPackagePath = prop.getProperty("parentPackagePath").trim();
-
-        //执行代码自动生成
-        // 代码生成器
-        AutoGenerator mpg = new AutoGenerator();
-        // 全局配置  user.dir 项目根路径
-        if(StringUtils.isEmpty(projectPath)){
-            projectPath = System.getProperty("user.dir");
-        }
-        GlobalConfig gc = getGlobalConfig(projectPath,author);
-        mpg.setGlobalConfig(gc);
-
-        // 数据源配置
-        DataSourceConfig dataSourceConfig = getDataSourceConfig(url,driverName,username,password);
-        mpg.setDataSource(dataSourceConfig);
-
-        // 包配置
-        PackageConfig pc = getPackageConfig(parentPackagePath);
-        mpg.setPackageInfo(pc);
-
-        // 策略配置
-        StrategyConfig strategy = getStrategyConfig();
-        mpg.setStrategy(strategy);
-
-        // 配置模板
-        TemplateConfig templateConfig = getTemplateConfig(templatePath);
-        mpg.setTemplate(templateConfig);
-        // 配置模板引擎
-//        mpg.setTemplateEngine(new FreemarkerTemplateEngine());
-        mpg.setTemplateEngine(new VelocityTemplateEngine());
-
-        // 自定义配置
-        InjectionConfig cfg = getInjectionConfig(pc,projectPath,templatePath);
-        mpg.setCfg(cfg);
-        mpg.execute();
     }
 }
